@@ -34,7 +34,7 @@ namespace EnderEngine.Core
         {
             RealDeltaTime = deltaTime;
             DeltaTime = deltaTime * timeScale;
-            FPS = 1000 / deltaTime;
+            FPS = 42 / deltaTime;
         }
 
     }
