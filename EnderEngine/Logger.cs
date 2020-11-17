@@ -67,23 +67,23 @@ namespace EnderEngine
             // checks for the Logging method that you chose
             if (method == LogMethod.ToConsole)
             {
-                Console.Write($"[{Level}]", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(), " : ", Message);
+                Console.WriteLine($"[{Level}]", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(), " : ", Message);
             }
 
             if (method == LogMethod.ToFile)
             {
                 using (System.IO.StreamWriter text = System.IO.File.AppendText(this.LogPath))
                 {
-                    text.Write($"[{Level}]", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(), " : ", Message);
+                    text.WriteLine($"[{Level}]", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(), " : ", Message);
                 }
             }
             else
             {
                 using (System.IO.StreamWriter text = System.IO.File.AppendText(this.LogPath))
                 {
-                    text.Write($"[{Level}]", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(), " : ", Message);
+                    text.WriteLine($"[{Level}]", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(), " : ", Message);
                 }
-                Console.Write($"[{Level}]", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(), " : ", Message);
+                Console.WriteLine($"[{Level}]", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString(), " : ", Message);
             }
         }
 
