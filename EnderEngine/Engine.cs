@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,25 +7,64 @@ using EnderEngine.Core;
 
 namespace EnderEngine
 {
+  
     /// <summary>
     /// TODO
     /// </summary>
     public class Engine
     {
 
+        #region StaticGlobalEngineCode
+        private static bool assemblyInitialized = false;
+        internal static Logger engineLogger = new Logger("EnderEngineAssembly");
+        
+        /// <summary>
+        /// Initializes the whole assembly, call once at the start of your program
+        /// </summary>
+        public static void Init()
+        {
+            if (assemblyInitialized) // Checks and ensures the Init is run only once
+            {
+                engineLogger.Log("Cannot initialize the assembly more than 1 time, skipping initialization", Logger.LogLevel.WARN);
+                return;
+            }
+            assemblyInitialized = true;
+
+            engineLogger.Log("Log files can be found in $\"{ExecutionDir}/Logs/\"", Logger.LogLevel.INFO, Logger.LogMethod.TO_CONSOLE);
+        }
+        #endregion StaticCode
+        
         /// <summary>
         /// This bool indicates wether the Engine has it's Run() method called
         /// </summary>
         private bool isRunning = false;
 
+        public readonly Logger logger;
+        public readonly int Id;
+
         /// <summary>
-        /// TODO
+        /// Constructor of the engine
         /// </summary>
-        public Engine()
+        /// <param name="id">
+        /// The Id is to help differenciate the engines if you have multiple instances.
+        /// If the Id is set -1, the engine will set it to 0 and will act as if it is the only instance (you can still have multiple engine instances without declaring IDs).
+        /// If the value is negative it will be changed to its absolute value
+        /// </param>
+        public Engine(int id = -1)
         {
+            //Constructor values
+            Id = Math.Abs(id);
+            //Construction logic
+            if (id == -1)
+            {
+                Id = 0;
+                logger = new Logger("EnderEngine");
+            }
+            else
+                logger = new Logger("EnderEngine-" + Id);
             //TODO: manage the initialization of components, scripts, etc...
         }
-
+      
         /// <summary>
         /// Main entry of the program, runs a loop that calls the 'Cycle' method each iteration. Stop can be requested by pressing `escape` in the console.
         /// </summary>
@@ -39,7 +78,6 @@ namespace EnderEngine
             }
             Shutdown();
         }
-
 
         /// <summary>
         /// This method is called each loop iteration, handles update and rendering logic every frame.

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EnderEngine;
+using EnderEngine.Core;
 
 namespace EnderEngineExampleApp
 {
@@ -9,11 +10,15 @@ namespace EnderEngineExampleApp
     {
         private static void Main(string[] args)
         {
+            Engine.Init();
+          
             Engine engine = new Engine();
+          
             //engine.Run();
             Task task = RunEngineAsync(engine);
             engine.Cycle();
             task.Wait();
+          
             for (int i = 0; i < 42; i++)
                 engine.Cycle();
         }
