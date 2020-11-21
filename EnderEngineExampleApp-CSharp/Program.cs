@@ -14,13 +14,7 @@ namespace EnderEngineExampleApp
           
             Engine engine = new Engine();
           
-            //engine.Run();
-            Task task = RunEngineAsync(engine);
-            engine.Cycle();
-            task.Wait();
-          
-            for (int i = 0; i < 42; i++)
-                engine.Cycle();
+            engine.Run();
         }
 
         public static async Task RunEngineAsync(Engine engine)

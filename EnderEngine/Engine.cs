@@ -33,7 +33,15 @@ namespace EnderEngine
             engineLogger.Log("Log files can be found in $\"{ExecutionDir}/Logs/\"", Logger.LogLevel.INFO, Logger.LogMethod.TO_CONSOLE);
         }
         #endregion StaticCode
-        
+
+        #region Time
+        private System.Timers.Timer timer;
+
+        private float deltaTime;
+        private double oldTime;
+        private double newTime;
+        #endregion Time
+
         /// <summary>
         /// This bool indicates wether the Engine has it's Run() method called
         /// </summary>
@@ -85,19 +93,17 @@ namespace EnderEngine
         public void Cycle()
         {
             if (isRunning)
-            {
-                Console.WriteLine("You can't run the Cycle yourself if the Engine is already managing it"); //Change to log when logging system implemented
-                return;
-            }
-            EngineCycle();
+                logger.Log("You can't run the Cycle yourself if the Engine is already managing it", Logger.LogLevel.WARN); //Change to log when logging system implemented
+            else
+                EngineCycle();
         }
 
         /// <summary>
-        /// this method is called each loop iteration, handles update and rendering logic every frame.
+        /// This method is called each loop iteration, handles update and rendering logic every frame.
         /// </summary>
         private void EngineCycle()
         {
-            Console.WriteLine("Update"); // Test line -> to remove when done
+            logger.Log("Update", Logger.LogLevel.DEBUG); // Test line -> to remove when done
             //Handle game logic, rendering, updates, etc...
         }
 
