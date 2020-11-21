@@ -5,7 +5,13 @@
 #
 import Includes
 import EnderEngine
+import time
 
-EnderEngine.Engine.Test()
+#Nothing is quite working in here...
+engine = EnderEngine.Engine()
+engine.logger.Log("test", EnderEngine.Logger.LogLevel.FATAL);
 
 input("Program ended. press enter to exit or close the window. ")
+
+# Console/File logging, global value -> call override
+# Disable logging levels
