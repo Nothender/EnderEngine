@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using EnderEngine.Core;
+using Pastel;
 
 namespace EnderEngine
 {
@@ -44,7 +45,7 @@ namespace EnderEngine
         }
 
         /// <summary>
-        /// 
+        /// Toggles whether or not the date will be written in the log prefix
         /// </summary>
         /// <param name="enable"></param>
         public static void EnableDateAndTimeWriting(bool enable)
@@ -76,7 +77,7 @@ namespace EnderEngine
         /// <returns>A string containing the logging prefix</returns>
         internal string GetLogPrefix(LogLevel logLevel)
         {
-            return $"[{NamePrefix}] " + (DoWriteDateAndTime ? "{" + DateTime.Now + "} " : "") + $"[{logLevelsStringArray[(int)logLevel]}]";
+            return $"[{NamePrefix}] " + (DoWriteDateAndTime ? ("{" + DateTime.Now + "} ").Pastel(System.Drawing.Color.Gray) : "") + $"[{logLevelsStringArray[(int)logLevel]}]".Pastel(logLevelsHexColorCodes[(int) logLevel]);
         }
 
         /// <summary>
@@ -125,6 +126,15 @@ namespace EnderEngine
             "Warn",
             "Debug",
             "Info"
+        };
+
+        private readonly System.Drawing.Color[] logLevelsHexColorCodes =
+        {
+            System.Drawing.Color.DarkRed,
+            System.Drawing.Color.Red,
+            System.Drawing.Color.Yellow,
+            System.Drawing.Color.Purple,
+            System.Drawing.Color.Green
         };
 
         /// <summary>
