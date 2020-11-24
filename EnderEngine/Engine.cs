@@ -28,18 +28,28 @@ namespace EnderEngine
                 engineLogger.Log("Cannot initialize the assembly more than 1 time, skipping initialization", Logger.LogLevel.WARN);
                 return;
             }
-            assemblyInitialized = true;
 
+            Time.Init();
+
+            assemblyInitialized = true;
+            
             engineLogger.Log("Log files can be found in $\"{ExecutionDir}/Logs/\"", Logger.LogLevel.INFO, Logger.LogMethod.TO_CONSOLE);
         }
         #endregion StaticCode
 
         #region Time
-        private System.Timers.Timer timer;
+        /// <summary>
+        /// The TimeStep given at the beginning of the update
+        /// </summary>
+        public TimeStep currentTimeStep;
+        /// <summary>
+        /// The TimeScale is a value, that multiplies RealDeltaTime to get RealDeltaTime in the TimeStep (useful if you wanna slow down or accelerate the time in your program)
+        /// </summary>
+        public float timeScale = 0.5f;
 
         private float deltaTime;
-        private double oldTime;
-        private double newTime;
+        private double oldTime = 0;
+        private double newTime = 0;
         #endregion Time
 
         /// <summary>
@@ -103,7 +113,13 @@ namespace EnderEngine
         /// </summary>
         private void EngineCycle()
         {
-            logger.Log("Update", Logger.LogLevel.DEBUG); // Test line -> to remove when done
+            //Time logic
+            newTime = Time.SecondsElapsedSinceStart;
+            deltaTime = (float) (newTime - oldTime);
+            oldTime = newTime;
+            currentTimeStep = new TimeStep(deltaTime, timeScale);
+
+            logger.Log($"Update - {currentTimeStep}", Logger.LogLevel.DEBUG); // Test line -> to remove when done
             //Handle game logic, rendering, updates, etc...
         }
 

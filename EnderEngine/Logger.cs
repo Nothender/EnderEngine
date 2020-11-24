@@ -27,7 +27,7 @@ namespace EnderEngine
         /// <summary>
         /// The default logging method (Console, File or both), any LogMethod given in the parameters of the Log method will override this setting
         /// </summary>
-        public static LogMethod defaultLogMethod = LogMethod.TO_FILE_AND_CONSOLE;
+        public static LogMethod DefaultLogMethod = LogMethod.TO_FILE_AND_CONSOLE;
 
         /// <summary>
         /// The name written at the beginning of the prefix (ex in the enderEngine logger : [EnderEngine] {date} [LogLevel])
@@ -57,7 +57,7 @@ namespace EnderEngine
         /// </summary>
         public static void SetDefaultLoggingMethod(LogMethod logMethod = LogMethod.TO_FILE_AND_CONSOLE)
         {
-            defaultLogMethod = logMethod;
+            DefaultLogMethod = logMethod;
         }
         /// <summary>
         /// Ignores the given logLevel (won't log a message depending on its logLevel, either in the console or the log file)
@@ -91,7 +91,7 @@ namespace EnderEngine
             if (IgnoredLogLevels.Contains(logLevel))
                 return;
             if (method == null)
-                method = defaultLogMethod;
+                method = DefaultLogMethod;
             string prefix = GetLogPrefix(logLevel);
             if ((int)method < 2) //If we want to log in the Console (LogMethod.TO_CONSOLE or TO_CONSOLE_AND_FILE)
                 Console.WriteLine($"{prefix}: {message}");

@@ -13,15 +13,15 @@ namespace EnderEngine.Core
     public readonly struct TimeStep
     {
         /// <summary>
-        /// Returns the time that the last Cycle took
+        /// The time in seconds elapsed since the last frame, not modified by timescale
         /// </summary>
         public readonly float RealDeltaTime;
         /// <summary>
-        /// The time elapsed since the last frame
+        /// The time in seconds elapsed since the last frame
         /// </summary>
         public readonly float DeltaTime;
         /// <summary>
-        /// The current framerate (calculated by dividing a time unit by it's corresponding elapsed time => 1000ms / deltaTime in ms)
+        /// The current framerate (calculated by dividing a time unit by it's corresponding elapsed time => 1s / DeltaTime in seconds)
         /// </summary>
         public readonly float FPS;
 
@@ -34,7 +34,17 @@ namespace EnderEngine.Core
         {
             RealDeltaTime = deltaTime;
             DeltaTime = deltaTime * timeScale;
-            FPS = 1000 / deltaTime;
+            FPS = 1 / deltaTime;
+        }
+
+        /// <summary>
+        /// Returns a formatted string with all the values of the current TimeStep instance
+        /// </summary>
+        /// <returns> The formatted string </returns>
+        public override string ToString()
+        {
+            return $"RealDeltaTime: {RealDeltaTime}s, DeltaTime: {DeltaTime}s, FPS: {FPS}";
+
         }
 
     }
