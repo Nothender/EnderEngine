@@ -17,6 +17,8 @@ namespace EnderEngineExampleApp
 
             engine = new Engine();
 
+            //Logger.SetDefaultLoggingMethod(Logger.LogMethod.TO_CONSOLE);
+
             engine.Run();
         }
 

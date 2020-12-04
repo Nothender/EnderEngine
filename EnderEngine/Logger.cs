@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using EnderEngine.Core;
 using Pastel;
 
@@ -34,14 +35,17 @@ namespace EnderEngine
         /// </summary>
         public string NamePrefix;
         
-        public Logger(string namePrefix)
+        static Logger()
         {
-            NamePrefix = namePrefix;
-            //TODO: Check for file created (use File System later, to make that check simpler, use event system to do it only once at startup)
             System.IO.Directory.CreateDirectory("Logs/");
             if (System.IO.File.Exists(LogsFilePath))
                 return;
             System.IO.File.Create(LogsFilePath).Close();
+        }
+
+        public Logger(string namePrefix)
+        {
+            NamePrefix = namePrefix;
         }
 
         /// <summary>

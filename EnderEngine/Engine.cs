@@ -15,24 +15,15 @@ namespace EnderEngine
     {
 
         #region StaticGlobalEngineCode
-        private static bool assemblyInitialized = false;
         internal static Logger engineLogger = new Logger("EnderEngineAssembly");
-        
+
         /// <summary>
         /// Initializes the whole assembly, call once at the start of your program
         /// </summary>
         public static void Init()
         {
-            if (assemblyInitialized) // Checks and ensures the Init is run only once
-            {
-                engineLogger.Log("Cannot initialize the assembly more than 1 time, skipping initialization", Logger.LogLevel.WARN);
+            if (Assembly.Init()) //If the assembly was already initialized
                 return;
-            }
-
-            Time.Init();
-
-            assemblyInitialized = true;
-            
             engineLogger.Log("Log files can be found in $\"{ExecutionDir}/Logs/\"", Logger.LogLevel.INFO, Logger.LogMethod.TO_CONSOLE);
         }
         #endregion StaticCode
