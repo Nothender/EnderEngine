@@ -15,8 +15,14 @@ namespace EnderEngine
     {
 
         #region StaticGlobalEngineCode
+        /// <summary>
+        /// The name of the Engine/Assembly
+        /// </summary>
         public const string NAME = "EnderEngine";
-        public const string VERSION = "0.0.4.0";
+        /// <summary>
+        /// The current version of the Engine in that format : Major.Minor.Fix/Small.Revision/SmallExtra
+        /// </summary>
+        public const string VERSION = "0.0.4.0"; //The last number is for really small changes and can be ignored
 
         internal static Logger engineLogger = new Logger("EnderEngineAssembly");
 
