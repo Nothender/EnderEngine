@@ -43,6 +43,7 @@ namespace EnderEngine.Core
         /// <returns> The formatted string </returns>
         public override string ToString()
         {
+            
             return $"RealDeltaTime: {RealDeltaTime}s, DeltaTime: {DeltaTime}s, FPS: {FPS}";
 
         }
