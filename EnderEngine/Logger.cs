@@ -112,7 +112,7 @@ namespace EnderEngine
                     lock(logQueue)
                         logQueue.Add($"{GetLogPrefix(logLevel, false)}: { message}");
                     
-                    if (!isLogQueueOpened && logQueue.Count > maxQueueSize / 2)
+                    if (!isLogQueueOpened)
                         WriteLogQueueToFile().ConfigureAwait(false);
                 });
             }
