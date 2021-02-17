@@ -33,7 +33,7 @@ namespace EnderEngine
         {
             if (Assembly.Init()) //If the assembly was already initialized
                 return;
-            engineLogger.Log("Log files can be found in $\"{ExecutionDir}/Logs/\"", Logger.LogLevel.INFO, Logger.LogMethod.TO_CONSOLE);
+            engineLogger.Log($"Log files can be found in \"{AppContext.BaseDirectory}{Logger.LogsFilePath}\"", Logger.LogLevel.INFO, Logger.LogMethod.TO_CONSOLE);
         }
         #endregion StaticCode
 
@@ -56,6 +56,7 @@ namespace EnderEngine
         /// This bool indicates wether the Engine has it's Run() method called
         /// </summary>
         private bool isRunning = false;
+        private EventHandler startupEvent;
 
         public readonly Logger logger;
         public readonly int Id;
@@ -88,7 +89,8 @@ namespace EnderEngine
         /// </summary>
         public void Run()
         {
-            Awake();
+            Start();
+            startupEvent?.Invoke(this, null);
             isRunning = true;
             while (!IsStopRequested())
             {
@@ -123,10 +125,10 @@ namespace EnderEngine
             //Handle game logic, rendering, updates, etc...
         }
 
-        private void Awake()
+        private void Start()
         {
             //TODO: design, private, internal or public
-            //Awake/Init game objects, running logic, start running stuff, etc...
+            //Awake/Start game objects, running logic, start running stuff, etc...
         }
 
         private void Shutdown()

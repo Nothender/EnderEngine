@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using EnderEngine.Core;
 using Pastel;
+using System.IO;
 
 namespace EnderEngine
 {
@@ -11,11 +14,11 @@ namespace EnderEngine
         /// <summary>
         /// Name of the log file (static, cause every logger will log into the same file - the prefix and message will differenciate them)
         /// </summary>
-        private static readonly string LogsFileName = $"logs {DateTime.Now}".Replace(' ', '_').Replace('/', '-').Replace(':', '-') + ".log"; //TODO: Change extension handling with proper File System
+        public static readonly string LogsFileName = $"logs {DateTime.Now}.log".Replace(' ', '_').Replace('/', '-').Replace(':', '-'); //TODO: Change extension handling with proper File System
         /// <summary>
         /// Path to the log file
         /// </summary>
-        private static readonly string LogsFilePath = "Logs/" + LogsFileName; //Will be changed with File System handler
+        public static readonly string LogsFilePath = "Logs\\" + LogsFileName; //Will be changed with File System handler
         /// <summary>
         /// The log levels that the logging will be ignored of
         /// </summary>
@@ -78,14 +81,18 @@ namespace EnderEngine
         /// Returns the logging prefix (ex : "[EnderEngine] {Date} [Info]:")
         /// </summary>
         /// <param name="logLevel">The logLevel corresponding to the log, concatenates at the end "[LoggerPrefixName] {Date} [LogLevel]</param>
+        /// <param name="doColoring">If the string returned will be colored</param>
         /// <returns>A string containing the logging prefix</returns>
-        internal string GetLogPrefix(LogLevel logLevel)
+        internal string GetLogPrefix(LogLevel logLevel, bool doColoring = true)
         {
-            return $"[{NamePrefix}] " + (DoWriteDateAndTime ? ("{" + DateTime.Now + "} ").Pastel(System.Drawing.Color.Gray) : "") + $"[{logLevelsStringArray[(int)logLevel]}]".Pastel(logLevelsHexColorCodes[(int) logLevel]);
+            if (doColoring)
+                return $"[{NamePrefix}] " + (DoWriteDateAndTime ? ("{" + DateTime.Now + "} ").Pastel(System.Drawing.Color.Gray) : "") + $"[{logLevelsStringArray[(int)logLevel]}]".Pastel(logLevelsHexColorCodes[(int)logLevel]);
+            else
+                return $"[{NamePrefix}] " + (DoWriteDateAndTime ? ("{" + DateTime.Now + "} ") : "") + $"[{logLevelsStringArray[(int)logLevel]}]";
         }
 
         /// <summary>
-        ///  Enables to log a given string into a file/console. By default, the method will log into a file and into the console
+        /// Enables to log a given string into a file/console. By default, the method will log into a file and into the console
         /// </summary>
         /// <param name="message">The string representing the message you want to log</param>
         /// <param name="logLevel">The level of the log (ex : "[Error]", if you are trying to log an error that occured)</param>
@@ -96,15 +103,18 @@ namespace EnderEngine
                 return;
             if (method == null)
                 method = DefaultLogMethod;
-            string prefix = GetLogPrefix(logLevel);
             if ((int)method < 2) //If we want to log in the Console (LogMethod.TO_CONSOLE or TO_CONSOLE_AND_FILE)
-                Console.WriteLine($"{prefix}: {message}");
+                Console.WriteLine($"{GetLogPrefix(logLevel)}: { message}");
             if (method > 0) //If we want to log into the log file (LogMethod.TO_CONSOLE_AND_FILE or TO_FILE)
             {
-                using (System.IO.StreamWriter text = System.IO.File.AppendText(LogsFilePath)) //Write in file using the File I/O System
+                Task.Run(() =>
                 {
-                    text.WriteLine($"{prefix}: {message}");
-                }
+                    lock(logQueue)
+                        logQueue.Add($"{GetLogPrefix(logLevel, false)}: { message}");
+                    
+                    if (!isLogQueueOpened && logQueue.Count > maxQueueSize / 2)
+                        WriteLogQueueToFile().ConfigureAwait(false);
+                });
             }
         }
 
@@ -150,5 +160,30 @@ namespace EnderEngine
             TO_FILE_AND_CONSOLE = 1,
             TO_FILE = 2
         }
+
+        // Logging to file very badly optimized, TODO : fix
+
+        private static readonly int maxQueueSize = 10;
+        private static List<string> logQueue = new List<string>(maxQueueSize);
+        private static bool isLogQueueOpened = false;
+
+        private static async Task WriteLogQueueToFile()
+        {
+            isLogQueueOpened = true;
+            await Task.Run(() => 
+            {
+                do
+                {
+                    lock (logQueue)
+                    {
+                        File.AppendAllLines(LogsFilePath, logQueue);
+                        logQueue.Clear();
+                    }
+                    Task.Delay(50);
+                } while (logQueue.Count() != 0);
+            });
+            isLogQueueOpened = false;
+        }
+
     }
 }
