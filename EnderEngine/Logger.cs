@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EnderEngine.Core;
 using Pastel;
 using System.IO;
+using System.Collections.Concurrent;
 
 namespace EnderEngine
 {
@@ -18,7 +19,7 @@ namespace EnderEngine
         /// <summary>
         /// Path to the log file
         /// </summary>
-        public static readonly string LogsFilePath = "Logs\\" + LogsFileName; //Will be changed with File System handler
+        public static readonly string LogsFilePath = "Logs/" + LogsFileName; //Will be changed with File System handler
         /// <summary>
         /// The log levels that the logging will be ignored of
         /// </summary>
@@ -109,12 +110,11 @@ namespace EnderEngine
             {
                 Task.Run(() =>
                 {
-                    lock(logQueue)
-                        logQueue.Add($"{GetLogPrefix(logLevel, false)}: { message}");
-                    
+                    logQueue.Enqueue($"{GetLogPrefix(logLevel, false)}: { message}");
+
                     if (!isLogQueueOpened)
                         WriteLogQueueToFile().ConfigureAwait(false);
-                });
+                }).ConfigureAwait(true);
             }
         }
 
@@ -162,25 +162,33 @@ namespace EnderEngine
         }
 
         // Logging to file very badly optimized, TODO : fix
+        // Solution : ConcurrentQueue
 
-        private static readonly int maxQueueSize = 10;
-        private static List<string> logQueue = new List<string>(maxQueueSize);
+        private static ConcurrentQueue<string> logQueue = new ConcurrentQueue<string>();
         private static bool isLogQueueOpened = false;
 
         private static async Task WriteLogQueueToFile()
         {
+            if (isLogQueueOpened)
+                return;
             isLogQueueOpened = true;
             await Task.Run(() => 
             {
+                //string logLines = "";
                 do
                 {
-                    lock (logQueue)
+                    string logLine;
+                    using (StreamWriter writer = new StreamWriter(LogsFilePath, true))
                     {
-                        File.AppendAllLines(LogsFilePath, logQueue);
-                        logQueue.Clear();
+                        while (logQueue.TryDequeue(out logLine))
+                            writer.WriteLine(logLine);
+                            //logLines += $"{logLine}\n";
                     }
-                    Task.Delay(50);
-                } while (logQueue.Count() != 0);
+
+                    //File.AppendAllText(LogsFilePath, logLines);
+                    Task.Delay(100);
+                } while (!logQueue.IsEmpty);
+
             });
             isLogQueueOpened = false;
         }

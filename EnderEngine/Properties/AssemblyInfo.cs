@@ -8,7 +8,7 @@ using EnderEngine;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle(Engine.NAME)]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("An indev engine for making apps/frameworks/games")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nothender")]
 [assembly: AssemblyProduct("EnderEngine")]
