@@ -1,3 +1,6 @@
+
+[![nuget package](https://img.shields.io/nuget/v/NothenderEnderEngine)](https://www.nuget.org/packages/NothenderEnderEngine/)
+
 # EnderEngine
 
 ## for people who want an actual engine, i recommend coming back in a year or something :)
