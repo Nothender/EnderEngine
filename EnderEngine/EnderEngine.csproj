@@ -6,6 +6,7 @@
     <PackageId>NothenderEnderEngine</PackageId>
     <RepositoryType>Github</RepositoryType>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/Nothender/EnderEngine</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
