@@ -7,6 +7,7 @@ using EnderEngine.Core;
 using Pastel;
 using System.IO;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace EnderEngine
 {
@@ -79,17 +80,17 @@ namespace EnderEngine
         }
 
         /// <summary>
-        /// Returns the logging prefix (ex : "[EnderEngine] {Date} [Info]:")
+        /// Returns the logging prefix (ex : "[EnderEngine] [MainMethod] {Date} [Info]: Log example")
         /// </summary>
-        /// <param name="logLevel">The logLevel corresponding to the log, concatenates at the end "[LoggerPrefixName] {Date} [LogLevel]</param>
+        /// <param name="logLevel">The logLevel corresponding to the log, concatenates at the end "[LoggerPrefixName] [LoggingMethod] {Date} [LogLevel]</param>
         /// <param name="doColoring">If the string returned will be colored</param>
         /// <returns>A string containing the logging prefix</returns>
         internal string GetLogPrefix(LogLevel logLevel, bool doColoring = true)
         {
             if (doColoring)
-                return $"[{NamePrefix}] " + (DoWriteDateAndTime ? ("{" + DateTime.Now + "} ").Pastel(System.Drawing.Color.Gray) : "") + $"[{logLevelsStringArray[(int)logLevel]}]".Pastel(logLevelsHexColorCodes[(int)logLevel]);
+                return $"[{NamePrefix}] [{new StackFrame(2).GetMethod().Name}] " + (DoWriteDateAndTime ? ("{" + DateTime.Now + "} ").Pastel(System.Drawing.Color.Gray) : "") + $"[{logLevelsStringArray[(int)logLevel]}]".Pastel(logLevelsHexColorCodes[(int)logLevel]);
             else
-                return $"[{NamePrefix}] " + (DoWriteDateAndTime ? ("{" + DateTime.Now + "} ") : "") + $"[{logLevelsStringArray[(int)logLevel]}]";
+                return $"[{NamePrefix}] [{new StackFrame(2).GetMethod().Name}]" + (DoWriteDateAndTime ? ("{" + DateTime.Now + "} ") : "") + $"[{logLevelsStringArray[(int)logLevel]}]";
         }
 
         /// <summary>

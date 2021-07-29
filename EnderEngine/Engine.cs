@@ -22,7 +22,7 @@ namespace EnderEngine
         /// <summary>
         /// The current version of the Engine in that format : Major.Minor.Fix/Small.Revision/SmallExtra
         /// </summary>
-        public const string VERSION = "0.0.4.2"; //The last number is for really small changes and can be ignored
+        public const string VERSION = "0.0.4.4"; //The last number is for really small changes and can be ignored
 
         internal static Logger engineLogger = new Logger("EnderEngineAssembly");
 
