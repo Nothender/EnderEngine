@@ -1,6 +1,6 @@
 # EnderEngine
 
-## for people who want an actual engine, i recommend coming back in a year or something :)
+## for people who want an actual engine, we recommend coming back in a year or something (probably more) :)
 
 Dependencies (that you need to download/include in your project) :
 * for EnderEngine
