@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EnderEngine.Logging;
 
 namespace EnderEngine.Core
 {
@@ -19,7 +20,7 @@ namespace EnderEngine.Core
         {
             if (assemblyInitialized) // Checks and ensures the Init is run only once
             {
-                Engine.engineLogger.Log("Cannot initialize the assembly more than 1 time, skipping initialization", Logger.LogLevel.WARN);
+                Engine.engineLogger.Log("Cannot initialize the assembly more than 1 time, skipping initialization", LogLevel.WARN);
                 return true;
             }
 
