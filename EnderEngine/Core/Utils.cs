@@ -24,6 +24,16 @@ namespace EnderEngine.Core
             return result;
         }
 
+        /// <summary>
+        /// Removes all occurences of an item in the array (Returns a new instance of array)
+        /// </summary>
+        /// <param name="item">The item you want to remove</param>
+        /// <returns>A new array without any occurences of the item</returns>
+        public static T[] Remove<T>(this T[] array, T item)
+        {
+            return array.Where(t => !t.Equals(item)).ToArray();
+        }
+
         //TODO: add RemoveAt(int index), Remove(T item), Insert(T item, int index), etc...
         #endregion ArrayUtils
     }
