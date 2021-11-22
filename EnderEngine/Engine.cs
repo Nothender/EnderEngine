@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EnderEngine.Core;
+using EnderEngine.Logging;
 
 namespace EnderEngine
 {
@@ -33,7 +34,7 @@ namespace EnderEngine
         {
             if (Assembly.Init()) //If the assembly was already initialized
                 return;
-            engineLogger.Log($"Log files can be found in \"{AppContext.BaseDirectory}{Logger.LogsFilePath}\"", Logger.LogLevel.INFO, Logger.LogMethod.TO_CONSOLE);
+            engineLogger.Log($"Log files can be found in \"{AppContext.BaseDirectory}{Logger.FilePath}\"", LogLevel.INFO);
         }
         #endregion StaticCode
 
@@ -105,7 +106,7 @@ namespace EnderEngine
         public void Cycle()
         {
             if (isRunning)
-                logger.Log("You can't run the Cycle yourself if the Engine is already managing it", Logger.LogLevel.WARN); //Change to log when logging system implemented
+                logger.Log("You can't run the Cycle yourself if the Engine is already managing it", LogLevel.WARN); //Change to log when logging system implemented
             else
                 EngineCycle();
         }
@@ -121,7 +122,7 @@ namespace EnderEngine
             oldTime = newTime;
             currentTimeStep = new TimeStep(deltaTime, timeScale);
 
-            logger.Log($"Update - {currentTimeStep}", Logger.LogLevel.DEBUG); // Test line -> to remove when done
+            logger.Log($"Update - {currentTimeStep}", LogLevel.DEBUG); // Test line -> to remove when done
             //Handle game logic, rendering, updates, etc...
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using EnderEngine;
 using EnderEngine.Core;
+using EnderEngine.Logging;
 
 namespace EnderEngineExampleApp
 {
@@ -17,9 +18,15 @@ namespace EnderEngineExampleApp
 
             engine = new Engine();
 
-            //Logger.SetDefaultLoggingMethod(Logger.LogMethod.TO_CONSOLE);
+            int x = 0;
+            engine.logger.Log("banana", (LogLevel)x++);
+            engine.logger.Log("banana", (LogLevel)x++);
+            engine.logger.Log("banana", (LogLevel)x++);
+            engine.logger.Log("banana", (LogLevel)x++);
+            engine.logger.Log("banana", (LogLevel)x++);
+            engine.logger.Log("banana", (LogLevel)x++);
 
-            engine.Run();
+            //engine.Run();
         }
 
     }

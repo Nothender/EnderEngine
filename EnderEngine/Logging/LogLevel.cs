@@ -9,10 +9,11 @@ namespace EnderEngine.Logging
     /// </summary>
     public enum LogLevel
     {
-        INFO = 0,
-        DEBUG,
-        WARN,
+        FATAL = 0,
         ERROR,
-        FATAL
+        WARN,
+        INFO,
+        SUBINFO,
+        DEBUG
     }
 }
